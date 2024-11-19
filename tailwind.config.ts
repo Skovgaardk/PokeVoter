@@ -11,6 +11,11 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        pokemon: {
+          red: "#ef5350",
+          yellow: "#feca1b",
+          blue: "#3761a8"
+        }
       },
     },
   },
