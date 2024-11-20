@@ -30,7 +30,7 @@ const insertVote = async (
 };
 
 export async function POST(req: Request) {
-  let client: any;
+  let client;
   try {
     const { winnerId, loserId } = await req.json();
 
@@ -49,15 +49,12 @@ export async function POST(req: Request) {
       { status: 200 }
     );
   } catch (error) {
-    const err = error as any;
-    console.error("Error handling vote:", {
-      message: err.message,
-      stack: err.stack,
-      details: err,
-    });
+    console.error("Error handling vote:", error);
 
     // Rollback transaction in case of error
-    await client.sql`ROLLBACK`;
+    if (client) {
+      await client.sql`ROLLBACK`;
+    }
 
     return NextResponse.json(
       { error: "Internal Server Error" },
