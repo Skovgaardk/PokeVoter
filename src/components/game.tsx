@@ -35,19 +35,15 @@ export default function PokemonGame(props: Readonly<GameProps>) {
       return;
     }
 
-    const winnderid = id;
+    const winnderId = id;
 
     const firstPokemonId = pokemonUrls.firstPokemonUrl.split("/")[6];
     const secondPokemonId = pokemonUrls.secondPokemonUrl.split("/")[6];
 
-    console.log("id returned from pokemon view " + id);
-    console.log("first pokemon id " + firstPokemonId);
-    console.log("second pokemon id " + secondPokemonId);
-
-    if (winnderid === parseInt(firstPokemonId)) {
+    if (winnderId === parseInt(firstPokemonId)) {
       axios.post("/api/vote", {
-        winnerId: firstPokemonId,
-        loserId: secondPokemonId,
+        winnerId: parseInt(firstPokemonId),
+        loserId: parseInt(secondPokemonId),
       });
     } else {
       axios.post("/api/vote", {
