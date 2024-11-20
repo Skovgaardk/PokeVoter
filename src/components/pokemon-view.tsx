@@ -1,6 +1,6 @@
 "use client";
 
-import { getPokemon } from "@/hooks/pokemon-hook";
+import { GetPokemon } from "@/hooks/pokemon-hook";
 import Image from "next/image";
 
 
@@ -12,7 +12,7 @@ type PokemonViewProps = {
 export default function PokemonView(props: Readonly<PokemonViewProps>) {
   const { url, onVote } = props;
 
-  const { data, isError, isLoading, refetch } = getPokemon(url);
+  const { data, isError, isLoading, refetch } = GetPokemon(url);
 
   if (isLoading) {
     return <div>Loading...</div>;
