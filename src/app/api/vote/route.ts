@@ -1,5 +1,5 @@
 import { db } from "@vercel/postgres";
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 
 const updatePopularity = async (winnerId: number, loserId: number) => {
   const client = await db.connect();
