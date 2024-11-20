@@ -1,27 +1,21 @@
 "use server";
 
 import { fetchAllPokemons } from "@/app/lib/data";
-import PokemonView from "@/components/pokemon-view";
+import PokemonGame from "@/components/game";
 
 export default async function MainPage() {
   const pokemons = await fetchAllPokemons();
-  
-  //TODO: fix change of duplicates
-  const getRamdomPokemonUrl = () => {
-    const pokemonResults = pokemons.results
-     return pokemonResults[Math.floor(Math.random()*pokemonResults.length)].url
-}
 
   return (
-    <main>
-      <div className="h-screen w-screen flex flex-row justify-center items-center gap-6">
-        <PokemonView url={getRamdomPokemonUrl()} />
-        <div>
-          <h1 className="justify-center items-center border border-pokemon-yellow rounded-2xl p-4">
-            Vs
-          </h1>
-        </div>
-        <PokemonView url={getRamdomPokemonUrl()} />
+    <main className="flex flex-col">
+      <div className="relative text-center pt-8">
+        <h1 className="text-3xl">Pokemon Battle</h1>
+      </div>
+      <div className="relative text-center">
+        <p className="text-2xl">Vote for the coolest pokemon!</p>
+      </div>
+      <div className="absolute h-screen w-screen justify-center items-center">
+        <PokemonGame pokemons={pokemons} />
       </div>
     </main>
   );
