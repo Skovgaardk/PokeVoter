@@ -37,4 +37,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 
 ## TODO
-- add refresh when pressing vote
+- Add database functionality to the vote
