@@ -1,9 +1,7 @@
 "use client";
 
-import { Pokemon } from "@/models/pokemon";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import PokemonView from "./pokemon-view";
-import { sendVoteResult } from "@/hooks/pokemon-hook";
 import axios from "axios";
 
 type GameProps = {
@@ -30,16 +28,14 @@ export default function PokemonGame(props: Readonly<GameProps>) {
 
   const [pokemonUrls, setPokemonUrls] = useState(getRandomPokemonUrls());
 
-
   const handleVote = (id: number) => {
     setPokemonUrls(getRandomPokemonUrls());
     if (pokemonUrls.firstPokemonUrl === pokemonUrls.secondPokemonUrl) {
       setPokemonUrls(getRandomPokemonUrls());
       return;
     }
-    
-    const winnderid = id;
 
+    const winnderid = id;
 
     const firstPokemonId = pokemonUrls.firstPokemonUrl.split("/")[6];
     const secondPokemonId = pokemonUrls.secondPokemonUrl.split("/")[6];
@@ -49,14 +45,16 @@ export default function PokemonGame(props: Readonly<GameProps>) {
     console.log("second pokemon id " + secondPokemonId);
 
     if (winnderid === parseInt(firstPokemonId)) {
-      axios.post("/api/vote", { winnerId: firstPokemonId, loserId: secondPokemonId });
+      axios.post("/api/vote", {
+        winnerId: firstPokemonId,
+        loserId: secondPokemonId,
+      });
     } else {
-      axios.post("/api/vote", { winnerId: parseInt(secondPokemonId), loserId: parseInt(firstPokemonId) });
+      axios.post("/api/vote", {
+        winnerId: parseInt(secondPokemonId),
+        loserId: parseInt(firstPokemonId),
+      });
     }
-    
-
-
-
   };
 
   return (

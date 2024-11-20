@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-export function getPokemon(url: string) {
+export function GetPokemon(url: string) {
   const pokemon = useQuery({
     queryKey: [url],
     queryFn: async () => {
@@ -12,7 +12,7 @@ export function getPokemon(url: string) {
   return pokemon;
 }
 
-export function sendVoteResult(winnerId: number, loserId: number) {
+export function SendVoteResult(winnerId: number, loserId: number) {
   const vote = useMutation({
     mutationFn: async () => {
       const res = await axios.post("/api/vote", { winnerId, loserId });
