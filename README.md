@@ -38,5 +38,6 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## TODO
 - Make circle around vote-thingy its own div so it doesnt go away
-- add sidebar or main desktop to go to other routes
-- add a route to show the data from the database
+- refactor three-most-popular component to split into each their own
+- add some statistics to the bottom two squares
+- add authentication?

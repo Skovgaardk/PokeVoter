@@ -21,3 +21,15 @@ export function SendVoteResult(winnerId: number, loserId: number) {
   });
   return vote;
 }
+
+
+export function RetrieveMostPopular() {
+  const stats = useQuery({
+    queryKey: ["mostPopular"],
+    queryFn: async () => {
+      const response = await fetch("/api/stats/most-popular");
+      return await response.json();
+    },
+  });
+  return stats;
+}
