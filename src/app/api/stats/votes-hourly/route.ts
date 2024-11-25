@@ -1,36 +1,37 @@
 import { db, VercelPoolClient } from "@vercel/postgres";
 import { NextResponse } from "next/server";
 
-const getThreeMostPopularPokemons = async (client: VercelPoolClient) => {
-  const popular = await client.sql`
-      SELECT * FROM pokemon	
-      ORDER BY popularity DESC LIMIT 3
-      `;
-
-  return popular;
+const getVotesHourly = async (client: VercelPoolClient) => {
+  const votes = await client.sql`
+    SELECT * 
+FROM votes 
+WHERE vote_date >= NOW() - INTERVAL '1 hour';
+`;
+    
+      return votes;
 };
+
 
 export async function GET() {
   let client;
 
   try {
-
     client = await db.connect();
 
     await client.sql`BEGIN`;
 
-    const popular = await getThreeMostPopularPokemons(client);
+    const votes = await getVotesHourly(client);
 
     await client.sql`COMMIT`;
 
     return NextResponse.json(
-      {
-        mostPopular: popular.rows,
-      },
-      {
-        status: 200,
-      }
-    );
+        {
+            votes: votes.rows,
+        },
+        {
+            status: 200,
+        }
+        );
   } catch (error) {
     console.error("Error handling vote:", error);
 
@@ -40,13 +41,13 @@ export async function GET() {
     }
 
     return NextResponse.json(
-      {
-        error: error,
-      },
-      {
-        status: 500,
-      }
-    );
+        {
+            error: error,
+        },
+        {
+            status: 500,
+        }
+        );
   } finally {
     if (client) {
       client.release();

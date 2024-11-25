@@ -33,3 +33,36 @@ export function RetrieveMostPopular() {
   });
   return stats;
 }
+
+export function RetrieveLastHourVotes() {
+  const stats = useQuery({
+    queryKey: ["votesHourly"],
+    queryFn: async () => {
+      const response = await fetch("/api/stats/votes-hourly");
+      return await response.json();
+    },
+  });
+  return stats;
+}
+
+export function RetrieveLastDayVotes() {
+  const stats = useQuery({
+    queryKey: ["votesDaily"],
+    queryFn: async () => {
+      const response = await fetch("/api/stats/votes-daily");
+      return await response.json();
+    },
+  });
+  return stats;
+}
+
+export function RetrieveLastMonthVotes() {
+  const stats = useQuery({
+    queryKey: ["votesWeekly"],
+    queryFn: async () => {
+      const response = await fetch("/api/stats/votes-monthly");
+      return await response.json();
+    },
+  });
+  return stats;
+}

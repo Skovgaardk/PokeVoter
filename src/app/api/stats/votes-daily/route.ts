@@ -1,31 +1,31 @@
 import { db, VercelPoolClient } from "@vercel/postgres";
 import { NextResponse } from "next/server";
 
-const getThreeMostPopularPokemons = async (client: VercelPoolClient) => {
-  const popular = await client.sql`
-      SELECT * FROM pokemon	
-      ORDER BY popularity DESC LIMIT 3
-      `;
+const getVotesdaily = async (client: VercelPoolClient) => {
+  const votes = await client.sql`
+    SELECT * 
+FROM votes 
+WHERE vote_date >= NOW() - INTERVAL '1 day';
+`;
 
-  return popular;
+  return votes;
 };
 
 export async function GET() {
   let client;
 
   try {
-
     client = await db.connect();
 
     await client.sql`BEGIN`;
 
-    const popular = await getThreeMostPopularPokemons(client);
+    const votes = await getVotesdaily(client);
 
     await client.sql`COMMIT`;
 
     return NextResponse.json(
       {
-        mostPopular: popular.rows,
+        votes: votes.rows,
       },
       {
         status: 200,
