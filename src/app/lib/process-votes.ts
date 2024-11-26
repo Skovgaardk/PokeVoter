@@ -13,44 +13,39 @@ type Minute = {
 };
 
 
-//This function does not work due to time zone issues
 export function processVotesByMinute(votes: Vote[]): Minute[] {
-    const voteCounts: { [minute: string]: number } = {};
-  
-    console.log("Votes per minute:", votes);
-  
-    votes.forEach((vote) => {
+  const voteCounts = new Map<string, number>();
+
+  votes.forEach((vote) => {
       const voteDate = new Date(vote.vote_date);
-  
 
-      const roundedMinute = new Date(voteDate.getTime() - voteDate.getTimezoneOffset() * 60000);
-      const minuteKeyRounded = roundedMinute.toISOString().slice(11, 16);  
-  
-      voteCounts[minuteKeyRounded] = (voteCounts[minuteKeyRounded] || 0) + 1;
-    });
-    
-    console.log("Vote counts per minute:", voteCounts);
-
-    const result: Minute[] = [];
-    const now = new Date();
-  
-
-    for (let i = 0; i < 60; i++) {
-      const pastMinute = new Date(now.getTime() - i * 60 * 1000);
+      const localVoteDate = new Date(voteDate.getTime() - voteDate.getTimezoneOffset() * 60000);
       
-
-      const roundedPastMinute = new Date(pastMinute.getTime() - pastMinute.getTimezoneOffset() * 60000);
-      const minuteKey = roundedPastMinute.toISOString().slice(11, 16); 
-  
-      result.unshift({
-        minute: minuteKey,
-        voteCount: voteCounts[minuteKey] || 0,
+      const minuteKey = localVoteDate.toLocaleTimeString('en-US', { 
+          hour: '2-digit', 
+          minute: '2-digit', 
+          hour12: false 
       });
-    }
-    
-    console.log("Result per minute:", result);
-    return result;
-  }
+
+      voteCounts.set(minuteKey, (voteCounts.get(minuteKey) || 0) + 1);
+  });
+
+  const result: Minute[] =  Array.from({ length: 60 }, (_, i) => {
+      const pastMinute = new Date(Date.now() - i * 60 * 1000);
+      const minuteKey = pastMinute.toLocaleTimeString('en-US', { 
+          hour: '2-digit', 
+          minute: '2-digit', 
+          hour12: false 
+      });
+
+      return {
+          minute: minuteKey,
+          voteCount: voteCounts.get(minuteKey) || 0
+      };
+  }).reverse();
+
+  return result;
+}
   
 
 type Hourly = {
@@ -58,28 +53,28 @@ type Hourly = {
   voteCount: number;
 };
 export function processVotesByHour(votes: Vote[]): Hourly[] {
-  const voteCounts: { [hour: string]: number } = {};
+  const voteCounts = new Map<string, number>();
 
   votes.forEach((vote) => {
     const voteDate = new Date(vote.vote_date);
-    const hourKey = voteDate.toISOString().slice(0, 13) + ":00";
-    voteCounts[hourKey] = (voteCounts[hourKey] || 0) + 1;
+    
+    const localVoteDate = new Date(voteDate.getTime() - voteDate.getTimezoneOffset() * 60000);
+    
+    const hourKey = localVoteDate.getHours().toString().padStart(2, '0');
+
+    voteCounts.set(hourKey, (voteCounts.get(hourKey) || 0) + 1);
   });
 
-  const result: Hourly[] = [];
-  const now = new Date();
+  const processedHours: Hourly[] = Array.from({ length: 24 }, (_, i) => {
+    const hourKey = i.toString().padStart(2, '0');
 
-  for (let i = 0; i < 24; i++) {
-    const pastHour = new Date(now.getTime() - i * 60 * 60000);
-    const hourKey = pastHour.toISOString().slice(0, 13) + ":00";
+    return {
+      hour: hourKey,
+      voteCount: voteCounts.get(hourKey) || 0
+    };
+  });
 
-    result.unshift({
-      hour: hourKey.replace("T", " "),
-      voteCount: voteCounts[hourKey] || 0,
-    });
-  }
-
-  return result;
+  return processedHours;
 }
 
 type Daily = {
@@ -88,26 +83,33 @@ type Daily = {
 };
 
 export function processVotesByDay(votes: Vote[]): Daily[] {
-  const voteCounts: { [day: string]: number } = {};
+  const voteCounts = new Map<string, number>();
 
   votes.forEach((vote) => {
-    const voteDate = new Date(vote.vote_date);
-    const dayKey = voteDate.toISOString().slice(0, 10);
-    voteCounts[dayKey] = (voteCounts[dayKey] || 0) + 1;
+      const voteDate = new Date(vote.vote_date);
+      
+      const localVoteDate = new Date(voteDate.getTime() - voteDate.getTimezoneOffset() * 60000);
+      
+      const dayKey = localVoteDate.toLocaleString('en-US', { 
+          month: 'short', 
+          day: '2-digit' 
+      }).replace(',', '');
+
+      voteCounts.set(dayKey, (voteCounts.get(dayKey) || 0) + 1);
   });
 
-  const result: Daily[] = [];
-  const now = new Date();
+  const processedDays: Daily[] = Array.from({ length: 30 }, (_, i) => {
+      const pastDay = new Date(Date.now() - i * 24 * 60 * 60000);
+      const dayKey = pastDay.toLocaleString('en-US', { 
+          month: 'short', 
+          day: '2-digit' 
+      }).replace(',', '');
 
-  for (let i = 0; i < 30; i++) {
-    const pastDay = new Date(now.getTime() - i * 24 * 60 * 60000);
-    const dayKey = pastDay.toISOString().slice(0, 10);
+      return {
+          day: dayKey,
+          voteCount: voteCounts.get(dayKey) || 0
+      };
+  }).reverse();
 
-    result.unshift({
-      day: dayKey,
-      voteCount: voteCounts[dayKey] || 0,
-    });
-  }
-
-  return result;
+  return processedDays;
 }

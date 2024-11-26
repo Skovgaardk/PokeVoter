@@ -66,3 +66,14 @@ export function RetrieveLastMonthVotes() {
   });
   return stats;
 }
+
+export function RetrieveLatestVotes() {
+  const stats = useQuery({
+    queryKey: ["latestVotes"],
+    queryFn: async () => {
+      const response = await fetch("/api/stats/latest-votes");
+      return await response.json();
+    },
+  });
+  return stats;
+}

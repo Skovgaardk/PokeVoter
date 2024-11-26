@@ -45,10 +45,32 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
+const toolTipFormatter = (
+  value: string,
+  activeChart: keyof typeof chartConfig
+) => {
+  switch (activeChart) {
+    case "day":
+      return `${value}:00`;
+    case "month":
+      return new Date(value).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      });
+    case "hour":
+      return `${value}:00`;
+    default:
+      return value;
+  }
+};
+
 export default function VoteChart() {
   const [activeChart, setActiveChart] =
-    React.useState<keyof typeof chartConfig>("hour");
+    React.useState<keyof typeof chartConfig>("month");
 
+
+  //TODO: make it so that it only uses a single call to the API, and then filters the data on the client side.
+  // It was done this way becouse i initially wanted it to only call the api when the user changed the chart, but then i would not be able to show the total amount of votes on the top.
   const hourlyData = RetrieveLastHourVotes();
   const dailyData = RetrieveLastDayVotes();
   const monthlyData = RetrieveLastMonthVotes();
@@ -69,13 +91,20 @@ export default function VoteChart() {
       case "month":
         return processVotesByDay(monthlyData?.data.votes || []);
     }
-  }, [activeChart]);
+  }, [activeChart, hourlyData, dailyData, monthlyData, isLoading, isError]);
 
-  const total = {
-    hour: chartData?.reduce((acc, entry) => acc + entry.voteCount, 0) || 0,
-    day: chartData?.reduce((acc, entry) => acc + entry.voteCount, 0) || 0,
-    month: chartData?.reduce((acc, entry) => acc + entry.voteCount, 0) || 0,
-  };
+  const totalVotes = React.useMemo(() => {
+    if (isLoading || isError) return { hour: 0, day: 0, month: 0 };
+  
+    return {
+      hour: processVotesByMinute(hourlyData?.data.votes || [])
+        .reduce((acc, entry) => acc + entry.voteCount, 0),
+      day: processVotesByHour(dailyData?.data.votes || [])
+        .reduce((acc, entry) => acc + entry.voteCount, 0),
+      month: processVotesByDay(monthlyData?.data.votes || [])
+        .reduce((acc, entry) => acc + entry.voteCount, 0),
+    };
+  }, [hourlyData, dailyData, monthlyData, isLoading, isError]);
 
   if (isLoading) {
     return (
@@ -97,13 +126,11 @@ export default function VoteChart() {
     );
   }
 
-  console.log("day", chartData);
-
   return (
     <div className="h-full w-1/3 rounded-xl border text-card-foreground shadow p-4">
       <Card>
         <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
-          <div className="flex flex-1 flex-col justify-center gap-1 px-6 py-5 sm:py-6">
+          <div className="flex flex-1 flex-col justify-center gap-1 px-10 py-5 sm:py-6 text-lg">
             <CardTitle>Votes</CardTitle>
             <CardDescription>
               Showing total votes for the last month/day/hour
@@ -123,7 +150,9 @@ export default function VoteChart() {
                     {chartConfig[chart].label}
                   </span>
                   <span className="text-lg font-bold leading-none sm:text-3xl">
-                    {total[key as keyof typeof total].toLocaleString()}
+                    {totalVotes[
+                      key as keyof typeof totalVotes
+                    ].toLocaleString()}
                   </span>
                 </button>
               );
@@ -156,21 +185,9 @@ export default function VoteChart() {
                 axisLine={false}
                 tickMargin={8}
                 minTickGap={32}
-                tickFormatter={(value) => {
-                  const date = new Date(value);
-                  if (activeChart === "hour") {
-                    return `${date.getHours()}:${String(
-                      date.getMinutes()
-                    ).padStart(2, "0")}`;
-                  } else if (activeChart === "day") {
-                    return `${date.getHours()}:00`;
-                  } else {
-                    return date.toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                    });
-                  }
-                }}
+                tickFormatter={(value) =>
+                  activeChart === "day" ? `${value}:00` : value
+                }
               />
               <ChartTooltip
                 content={
@@ -178,19 +195,12 @@ export default function VoteChart() {
                     className="w-[150px]"
                     nameKey="views"
                     labelFormatter={(value) => {
-                      return new Date(value).toLocaleDateString("en-US", {
-                        month: "short",
-                        day: "numeric",
-                        year: "numeric",
-                      });
+                      return toolTipFormatter(value, activeChart);
                     }}
                   />
                 }
               />
-              <Bar
-                dataKey={activeChart === "hour" ? "amountOfVotes" : "voteCount"}
-                fill={`var(--color-${activeChart})`}
-              />
+              <Bar dataKey="voteCount" fill={`var(--color-${activeChart})`} />
             </BarChart>
           </ChartContainer>
         </CardContent>

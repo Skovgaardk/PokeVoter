@@ -37,7 +37,10 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 
 ## TODO
+in no particular order:
 - Make circle around vote-thingy its own div so it doesnt go away
 - refactor three-most-popular component to split into each their own
-- add some statistics to the bottom two squares
-- add authentication?
+- add authentication 
+    - enables username to be added to database
+- fix latest votes on /stats to show pokemon names, who won
+- make everything actually look good
