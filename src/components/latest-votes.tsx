@@ -1,17 +1,9 @@
 "use client";
 
 import { RetrieveLatestVotes } from "@/hooks/pokemon-hook";
-import { useEffect } from "react";
 import { LatestVoteApiResult } from "@/models/poke-api-results";
 export default function LatestVotes() {
   const { data, isLoading, isError } = RetrieveLatestVotes();
-
-  useEffect(() => {
-    if (data) {
-      console.log("somethingsomething");
-      console.log(data.latestVotes);
-    }
-  }, [data]);
 
   if (isLoading) {
     return (
