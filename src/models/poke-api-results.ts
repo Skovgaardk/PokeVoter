@@ -7,10 +7,10 @@ export type PokeApiResult<T> = {
 
 
 export type LatestVoteApiResult = {
-  id: number;
+  vote_id: number;
   username: string;
-  pokemon_1_id: number;
-  pokemon_2_id: number;
-  winner_id: number;
+  pokemon_1_name: string;
+  pokemon_2_name: string;
   vote_date: string;
+  vote_time: string;
 }

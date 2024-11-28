@@ -51,14 +51,14 @@ const toolTipFormatter = (
 ) => {
   switch (activeChart) {
     case "day":
-      return `${value}:00`;
+      return `${value}:00-${value}:59`;
     case "month":
       return new Date(value).toLocaleDateString("en-US", {
         month: "short",
         day: "numeric",
       });
     case "hour":
-      return `${value}:00`;
+      return `${value}:00-${value}:59`;
     default:
       return value;
   }
