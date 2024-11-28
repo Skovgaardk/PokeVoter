@@ -26,5 +26,4 @@ in no particular order:
 - refactor three-most-popular component to split into each their own
 - add authentication 
     - enables username to be added to database
-- fix latest votes on /stats to show pokemon names, who won
 - make everything actually look good

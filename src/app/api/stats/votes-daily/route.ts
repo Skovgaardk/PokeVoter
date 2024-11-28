@@ -1,27 +1,14 @@
-import { db, VercelPoolClient } from "@vercel/postgres";
+import { db } from "@vercel/postgres";
 import { NextResponse } from "next/server";
 
-const getVotesdaily = async (client: VercelPoolClient) => {
-  const votes = await client.sql`
-    SELECT * 
-FROM votes 
-WHERE vote_date >= NOW() - INTERVAL '1 day';
-`;
-
-  return votes;
-};
-
 export async function GET() {
-  let client;
-
   try {
-    client = await db.connect();
+    const client = await db.connect();
 
-    await client.sql`BEGIN`;
+    const votes =
+      await client.sql`SELECT * FROM votes WHERE vote_date >= NOW() - INTERVAL '1 day';`;
 
-    const votes = await getVotesdaily(client);
-
-    await client.sql`COMMIT`;
+    client.release();
 
     return NextResponse.json(
       {
@@ -34,11 +21,6 @@ export async function GET() {
   } catch (error) {
     console.error("Error handling vote:", error);
 
-    // Rollback transaction in case of error
-    if (client) {
-      await client.sql`ROLLBACK`;
-    }
-
     return NextResponse.json(
       {
         error: error,
@@ -47,9 +29,5 @@ export async function GET() {
         status: 500,
       }
     );
-  } finally {
-    if (client) {
-      client.release();
-    }
   }
 }
