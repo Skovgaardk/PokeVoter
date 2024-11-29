@@ -64,7 +64,7 @@ export default function ThreeMostPopular() {
     <div className="flex w-full place-content-evenly">
         <div className="flex flex-col h-full w-1/4 rounded-xl border text-card-foreground shadow p-4 items-center">
         <div>
-            <h1 className="text-3xl">Most Popular</h1>
+            <h1 className="text-3xl">Most popular</h1>
         </div>
             <div>
             <Image
@@ -102,7 +102,7 @@ export default function ThreeMostPopular() {
         </div>
         <div className="flex flex-col h-full w-1/4 rounded-xl border text-card-foreground shadow p-4 items-center">
         <div>
-            <h1 className="text-3xl">third most popular</h1>
+            <h1 className="text-3xl">Third most popular</h1>
         </div>
             <div>
             <Image

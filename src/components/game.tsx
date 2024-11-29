@@ -3,6 +3,7 @@
 import { useState } from "react";
 import PokemonView from "./pokemon-view";
 import axios from "axios";
+import { useSession } from "next-auth/react";
 
 type GameProps = {
   pokemons: {
@@ -13,6 +14,7 @@ type GameProps = {
 const getRandomNumber = (max: number) => Math.floor(Math.random() * max);
 
 export default function PokemonGame(props: Readonly<GameProps>) {
+  const { data: session} = useSession();
   const { pokemons } = props;
 
   const getRandomPokemonUrls = () => {
@@ -42,11 +44,13 @@ export default function PokemonGame(props: Readonly<GameProps>) {
 
     if (winnderId === parseInt(firstPokemonId)) {
       axios.post("/api/vote", {
+        username: session?.user?.name,
         winnerId: parseInt(firstPokemonId),
         loserId: parseInt(secondPokemonId),
       });
     } else {
       axios.post("/api/vote", {
+        username: session?.user?.name,
         winnerId: parseInt(secondPokemonId),
         loserId: parseInt(firstPokemonId),
       });

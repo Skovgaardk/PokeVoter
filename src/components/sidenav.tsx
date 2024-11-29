@@ -1,4 +1,11 @@
+import { signOut } from "next-auth/react";
+
 export default function Sidenav() {
+
+  const sighOut = () => {
+    signOut();
+  }
+
   return (
     <aside className="fixed w-60 bg-[#1c212c] min-h-full h-screen flex flex-col items-center pt-5 pb-2 space-y-7">
       <div className="w-full pr-3 flex flex-col gap-y-1 text-gray-500 fill-gray-500 text-sm">
@@ -76,23 +83,23 @@ export default function Sidenav() {
           Profile
         </div>
 
-
-
         <div className="w-full flex items-center gap-x-1.5 group select-none">
           <div className="w-1 rounded-xl h-8 bg-transparent transition-colors duration-200 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-[102%] translate-y-full group-hover:translate-y-0 bg-red-600 transition-all duration-300"></div>
           </div>
-          <div
-            className="group-hover:bg-white/10 w-full group-active:scale-95 self-stretch pl-2 rounded flex items-center space-x-2 transition-all duration-200 dark:group-hover:text-white dark:hover:text-white text-sm"
-          >
-            <svg
-              className="h-5 w-5 group-hover:fill-red-600 dark:fill-gray-600  transition-colors duration-200"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-            >
-              <path d="M19 21H5C3.89543 21 3 20.1046 3 19V15H5V19H19V5H5V9H3V5C3 3.89543 3.89543 3 5 3H19C20.1046 3 21 3.89543 21 5V19C21 20.1046 20.1046 21 19 21ZM11 16V13H3V11H11V8L16 12L11 16Z"></path>
-            </svg>
-            <span className="font-QuicksandMedium">log out (WIP)</span>
+          <div className="group-hover:bg-white/10 w-full group-active:scale-95 self-stretch pl-2 rounded flex items-center space-x-2 transition-all duration-200 dark:group-hover:text-white dark:hover:text-white text-sm">
+            <form action={sighOut}>
+              <button type="submit">
+                <svg
+                  className="h-5 w-5 group-hover:fill-red-600 dark:fill-gray-600  transition-colors duration-200"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M19 21H5C3.89543 21 3 20.1046 3 19V15H5V19H19V5H5V9H3V5C3 3.89543 3.89543 3 5 3H19C20.1046 3 21 3.89543 21 5V19C21 20.1046 20.1046 21 19 21ZM11 16V13H3V11H11V8L16 12L11 16Z"></path>
+                </svg>
+                <span className="font-QuicksandMedium">log out (WIP)</span>
+              </button>
+            </form>
           </div>
         </div>
       </div>

@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Sidenav from "@/components/sidenav";
+import { SessionProvider } from "next-auth/react";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -28,16 +29,19 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <div className="flex">
-          <div className="fixed h-screen">
-            <Sidenav />
+        <SessionProvider>
+          <div className="flex">
+            <div className="fixed h-screen">
+              <Sidenav />
+            </div>
+            <div className="flex-1 ml-60">
+              {" "}
+              <QueryClientProvider client={queryClient}>
+                {children}
+              </QueryClientProvider>
+            </div>
           </div>
-          <div className="flex-1 ml-60"> {/* Adjust margin-left to the width of the sidebar */}
-            <QueryClientProvider client={queryClient}>
-              {children}
-            </QueryClientProvider>
-          </div>
-        </div>
+        </SessionProvider>
       </body>
     </html>
   );
