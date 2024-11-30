@@ -24,6 +24,5 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 in no particular order:
 - Make circle around vote-thingy its own div so it doesnt go away
 - refactor three-most-popular component to split into each their own
-- add authentication 
-    - enables username to be added to database
 - make everything actually look good
+- fix css on stat page for latest votes
