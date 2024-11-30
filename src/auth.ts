@@ -14,5 +14,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (pathname === "/login") return true
       return !!auth
     },
-  }
+  },
+  trustHost: true,
 })
