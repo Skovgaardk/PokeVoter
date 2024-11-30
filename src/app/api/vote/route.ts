@@ -12,7 +12,8 @@ async function sendVoteToDB({
 }) {
   // Todo add authentication to get the username
   const client = await db.connect();
-  await client.sql`WITH update_popularity AS (
+  await client.sql`
+  WITH update_popularity AS (
     UPDATE pokemon
     SET popularity = CASE 
         WHEN id = ${winnerId} THEN popularity + 1

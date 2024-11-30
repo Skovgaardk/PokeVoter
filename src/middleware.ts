@@ -1,29 +1,19 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
- 
-export async function middleware(req: NextRequest) {
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-  //Remember to remove this line
-  console.log("token", token);
-  const { pathname } = req.nextUrl
+import { auth } from "./app/auth";
 
-  if (pathname === "/login") return NextResponse.next();
 
-  if (!token) {
-    return NextResponse.redirect(new URL('/login', req.nextUrl));
+export async function middleware(request: NextRequest) {
+  const session = await auth()
+
+  if (!session && request.nextUrl.pathname !== "/login"){
+    return NextResponse.redirect(new URL('/login', request.url))
   }
 
-  if (pathname === "/"){
-    return NextResponse.redirect(new URL('/game', req.url));
+  if (session && request.nextUrl.pathname === "/login"){
+    return NextResponse.redirect(new URL('/game', request.url))
   }
-
-
-  return NextResponse.next();
-}
+} 
 
 export const config = {
-  // https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
-
-  // matches on every other path than /login
-  matcher: ['/game', '/api', '/', '/stats'],
-};
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+}

@@ -15,7 +15,7 @@ export default async function GamePage() {
         <div className="relative text-center">
           <p className="text-2xl">Vote for the coolest pokemon!</p>
         </div>
-        <div className="absolute h-screen w-screen justify-center items-center">
+        <div className="h-screen w-full justify-center items-center">
           <PokemonGame pokemons={pokemons} />
         </div>
       </div>
