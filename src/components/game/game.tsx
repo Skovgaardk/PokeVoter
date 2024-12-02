@@ -44,7 +44,7 @@ export default function PokemonGame(props: Readonly<GameProps>) {
 
     if (winnderId === parseInt(firstPokemonId)) {
       axios.post("/api/vote", {
-        username: session?.user?.name,
+        username: session?.user?.email,
         winnerId: parseInt(firstPokemonId),
         loserId: parseInt(secondPokemonId),
       });
@@ -58,11 +58,11 @@ export default function PokemonGame(props: Readonly<GameProps>) {
   };
 
   return (
-    <div className="h-screen w-screen flex flex-row justify-center items-center gap-6">
+    <div className="h-full w-full flex flex-row justify-center items-center gap-6">
       <PokemonView url={pokemonUrls.firstPokemonUrl!} onVote={handleVote} />
       <div>
-        <h1 className="justify-center items-center border border-pokemon-yellow rounded-2xl p-4">
-          Vs
+        <h1 className="justify-center items-center border border-pokemon-yellow rounded-full p-4 text-pokemon-yellow [text-shadow:_0_6px_6px_rgb(34_40_49)]">
+          Vs.
         </h1>
       </div>
       <PokemonView url={pokemonUrls.secondPokemonUrl!} onVote={handleVote} />

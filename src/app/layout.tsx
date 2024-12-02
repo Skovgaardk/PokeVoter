@@ -2,7 +2,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { auth } from "@/app/auth";
 import Providers from "@/app/providers";
-import Sidenav from "@/components/sidenav";
+import Sidenav from "@/components/ui/sidenav";
 
 
 const geistSans = localFont({
@@ -24,17 +24,17 @@ export default async function RootLayout({
   const session = await auth();
 
   return (
-    <html lang="en" className="h-screen w-screen">
+    <html lang="en" className="h-full w-full bg-[#222831]">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <div className="flex">
           {session && (
-            <div className="fixed h-screen">
+            <div className="fixed h-full">
               <Sidenav />
             </div>
           )}
-          <div className="flex-1 ml-60">
+          <div className="flex-1 ml-50 bg-[#222831]">
             <Providers>{children}</Providers>
           </div>
         </div>

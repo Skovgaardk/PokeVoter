@@ -22,7 +22,6 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 
 ## TODO
 in no particular order:
-- Make circle around vote-thingy its own div so it doesnt go away
-- refactor three-most-popular component to split into each their own
+- maybe refactor three-most-popular component to split into each their own
 - make everything actually look good
 - fix css on stat page for latest votes

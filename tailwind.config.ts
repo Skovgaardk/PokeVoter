@@ -9,12 +9,16 @@ const config: Config = {
   ],
   theme: {
   	extend: {
+		fontFamily: {
+			pokeFontHollow: ['"Pokemon Hollow"', 'sans-serif'],
+			pokeFontSolid: ['"Pokemon Solid"', 'sans-serif'],
+		},
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			pokemon: {
   				red: '#ef5350',
-  				yellow: '#feca1b',
+  				yellow: '#eee652',
   				blue: '#3761a8'
   			},
   			card: {

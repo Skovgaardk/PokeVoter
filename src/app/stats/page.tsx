@@ -1,6 +1,6 @@
-import ThreeMostPopular from "@/components/three-most-popular";
-import VoteChart from "@/components/vote-chart";
-import LatestVotes from "@/components/latest-votes";
+import ThreeMostPopular from "@/components/stats/three-most-popular";
+import VoteChart from "@/components/stats/vote-chart";
+import LatestVotes from "@/components/stats/latest-votes";
 
 export default function StatsPage() {
   return (
