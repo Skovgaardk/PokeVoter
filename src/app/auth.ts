@@ -5,15 +5,4 @@ import "next-auth/jwt"
  
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [GitHub, Google],
-  pages: {
-    signIn: "/login",
-  },
-  callbacks: {
-    authorized({ request, auth}) {
-      const { pathname } = request.nextUrl
-      if (pathname === "/login") return true
-      return !!auth
-    },
-  },
-  trustHost: true,
 })

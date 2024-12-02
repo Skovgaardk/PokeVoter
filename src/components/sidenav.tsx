@@ -1,11 +1,6 @@
-import { signOut } from "next-auth/react";
+import { SignOut } from "@/components/auth/sign-out";
 
 export default function Sidenav() {
-
-  const sighOut = () => {
-    signOut();
-  }
-
   return (
     <aside className="fixed w-60 bg-[#1c212c] min-h-full h-screen flex flex-col items-center pt-5 pb-2 space-y-7">
       <div className="w-full pr-3 flex flex-col gap-y-1 text-gray-500 fill-gray-500 text-sm">
@@ -73,7 +68,7 @@ export default function Sidenav() {
               <path d="M12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12C21.9939 17.5203 17.5203 21.9939 12 22ZM12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20C16.4183 20 20 16.4183 20 12C19.995 7.58378 16.4162 4.00496 12 4ZM17 13H11V7H13V11H17V13Z"></path>
             </svg>
 
-            <span className="font-QuicksandMedium">More comming soon</span>
+            <span className="font-QuicksandMedium">More to be added</span>
           </div>
         </div>
       </div>
@@ -88,18 +83,7 @@ export default function Sidenav() {
             <div className="absolute top-0 left-0 w-full h-[102%] translate-y-full group-hover:translate-y-0 bg-red-600 transition-all duration-300"></div>
           </div>
           <div className="group-hover:bg-white/10 w-full group-active:scale-95 self-stretch pl-2 rounded flex items-center space-x-2 transition-all duration-200 dark:group-hover:text-white dark:hover:text-white text-sm">
-            <form action={sighOut}>
-              <button type="submit">
-                <svg
-                  className="h-5 w-5 group-hover:fill-red-600 dark:fill-gray-600  transition-colors duration-200"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M19 21H5C3.89543 21 3 20.1046 3 19V15H5V19H19V5H5V9H3V5C3 3.89543 3.89543 3 5 3H19C20.1046 3 21 3.89543 21 5V19C21 20.1046 20.1046 21 19 21ZM11 16V13H3V11H11V8L16 12L11 16Z"></path>
-                </svg>
-                <span className="font-QuicksandMedium">log out (WIP)</span>
-              </button>
-            </form>
+            <SignOut/>
           </div>
         </div>
       </div>
