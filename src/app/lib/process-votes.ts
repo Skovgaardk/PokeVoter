@@ -28,6 +28,7 @@ export function processVotesByMinute(votes: Vote[]): Minute[] {
       });
 
       voteCounts.set(minuteKey, (voteCounts.get(minuteKey) || 0) + 1);
+      console.log("VoteCount: ", voteCounts);
   });
 
   const result: Minute[] =  Array.from({ length: 60 }, (_, i) => {
@@ -44,6 +45,7 @@ export function processVotesByMinute(votes: Vote[]): Minute[] {
       };
   }).reverse();
 
+  console.log("Result: ", result);
   return result;
 }
   

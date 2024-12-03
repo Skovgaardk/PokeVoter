@@ -14,3 +14,9 @@ export type LatestVoteApiResult = {
   vote_date: string;
   vote_time: string;
 }
+
+export type PopularVoteApiResult = {
+  id: number;
+  name: string;
+  popularity: number;
+}

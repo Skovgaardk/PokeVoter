@@ -3,7 +3,7 @@ import "./globals.css";
 import { auth } from "@/app/auth";
 import Providers from "@/app/providers";
 import Sidenav from "@/components/ui/sidenav";
-
+import clsx from "clsx";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -34,7 +34,7 @@ export default async function RootLayout({
               <Sidenav />
             </div>
           )}
-          <div className="flex-1 ml-50 bg-[#222831]">
+          <div className={clsx("bg-[#222831] w-full h-full", {'ml-44': session})}>
             <Providers>{children}</Providers>
           </div>
         </div>

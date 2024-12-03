@@ -38,7 +38,7 @@ export default function PokemonView(props: Readonly<PokemonViewProps>) {
 
   return (
     <div className="w-[345px] h-[470px] flex flex-col rounded-3xl justify-evenly items-center bg-gradient-to-br from-pokemon-red to-pokemon-blue">
-      <div className="flex flex-col justify-evenly items-center bg-[#222831] p-8 rounded-2xl">
+      <div className="w-[315px] flex flex-col justify-evenly items-center bg-[#222831] p-5 rounded-2xl">
         <div>
           <Image
             src={data.sprites.front_default}
@@ -51,13 +51,15 @@ export default function PokemonView(props: Readonly<PokemonViewProps>) {
           {data.name}
         </h1>
         {/* TODO: change this to use form instead for optimization*/}
-        <div className=" rounded-3xl justify-evenly items-center bg-gradient-to-br from-pokemon-red to-pokemon-blue">
-          <button
-            className="text-pokemon-yellow text-3xl p-4 rounded-2xl font-bold italic [text-shadow:_0_6px_6px_rgb(34_40_49)] "
-            onClick={onClickHandler}
-          >
-            Vote
-          </button>
+        <div className=" rounded-3xl justify-evenly items-center bg-gradient-to-br from-pokemon-blue to-pokemon-red p-2">
+          <div className="items-center justify-center bg-[#222831] rounded-2xl">
+            <button
+              className="text-pokemon-yellow text-3xl p-4 rounded-2xl font-bold [text-shadow:_0_6px_6px_rgb(34_40_49)] "
+              onClick={onClickHandler}
+            >
+              Vote
+            </button>
+          </div>
         </div>
       </div>
     </div>

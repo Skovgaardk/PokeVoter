@@ -127,10 +127,10 @@ export default function VoteChart() {
   }
 
   return (
-    <div className="h-full w-1/3 rounded-xl border text-card-foreground shadow p-4">
+    <div className="h-full w-1/3 rounded-xl text-card-foreground shadow p-4 bg-[#292f38] shadow-sm border border-[#423e47]">
       <Card>
         <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
-          <div className="flex flex-1 flex-col justify-center gap-1 px-10 py-5 sm:py-6 text-lg">
+          <div className="flex flex-1 flex-col justify-center gap-1 px-10 py-5 sm:py-6 text-lg text-[#FFFFFF]">
             <CardTitle>Votes</CardTitle>
             <CardDescription>
               Showing total votes for the last month/day/hour
@@ -149,7 +149,7 @@ export default function VoteChart() {
                   <span className="text-xs text-muted-foreground">
                     {chartConfig[chart].label}
                   </span>
-                  <span className="text-lg font-bold leading-none sm:text-3xl">
+                  <span className="text-lg font-bold leading-none sm:text-3xl text-[#FFFFFF] ">
                     {totalVotes[
                       key as keyof typeof totalVotes
                     ].toLocaleString()}

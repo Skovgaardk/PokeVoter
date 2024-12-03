@@ -7,7 +7,7 @@ export default async function GamePage() {
   const pokemons = await fetchAllPokemons();
 
   return (
-    <main>
+    <main className="flex justify-center overflow-auto">
       <div className="flex flex-col space-y-6">
         <div className="text-center pt-8">
           <h1 className="text-6xl font-pokeFontSolid italic bg-gradient-to-r from-pokemon-red to-pokemon-blue inline-block text-transparent bg-clip-text pb-4 pr-4 ">

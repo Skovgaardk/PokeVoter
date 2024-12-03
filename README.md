@@ -21,7 +21,6 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
 ## TODO
-in no particular order:
-- maybe refactor three-most-popular component to split into each their own
-- make everything actually look good
-- fix css on stat page for latest votes
+- fix "hour" chart to work on production (timedate issue)
+- maybe refactor three-most-popular component to split into each their own components?
+- make everything actually look better?
