@@ -4,6 +4,7 @@ import { GetPokemon, RetrieveMostPopular } from "@/hooks/pokemon-hook";
 import { PopularVoteApiResult } from "@/models/poke-api-results";
 import { Pokemon } from "@/models/pokemon";
 import Image from "next/image";
+import ThreeMostPopularSkeleton from "./three-most-popularSkeleton";
 
 export default function ThreeMostPopular() {
   const {
@@ -62,11 +63,7 @@ export default function ThreeMostPopular() {
 
   if (isLoadingFromDB || poke1Loading || poke2Loading || poke3Loading) {
     return (
-      <div className="flex w-full place-content-evenly">
-        <h1>Loading...</h1>
-        <h1>Loading...</h1>
-        <h1>Loading...</h1>
-      </div>
+      <ThreeMostPopularSkeleton/>
     );
   }
 

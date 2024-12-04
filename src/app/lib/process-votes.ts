@@ -33,6 +33,7 @@ export function processVotesByMinute(votes: Vote[]): Minute[] {
 
   const result: Minute[] =  Array.from({ length: 60 }, (_, i) => {
       const pastMinute = new Date(Date.now() - i * 60 * 1000);
+      // This is not optimal, read toLocaleTimeString documentation
       const minuteKey = pastMinute.toLocaleTimeString('en-US', { 
           hour: '2-digit', 
           minute: '2-digit', 

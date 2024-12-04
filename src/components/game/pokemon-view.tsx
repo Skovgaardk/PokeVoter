@@ -2,6 +2,7 @@
 
 import { GetPokemon } from "@/hooks/pokemon-hook";
 import Image from "next/image";
+import PokemonViewSkeleton from "./pokemon-view-skeleton";
 
 type PokemonViewProps = {
   url: string;
@@ -15,11 +16,7 @@ export default function PokemonView(props: Readonly<PokemonViewProps>) {
 
   if (isLoading) {
     return (
-      <div className="w-[350px] h-[600px] flex flex-col border border-pokemon-red rounded-2xl justify-evenly items-center">
-        <div className="text-3xl font-bold italic bg-gradient-to-r from-pokemon-red to-pokemon-blue inline-block text-transparent bg-clip-text">
-          Loading...
-        </div>
-      </div>
+      <PokemonViewSkeleton/>
     );
   }
 

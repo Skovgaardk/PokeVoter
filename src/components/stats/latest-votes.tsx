@@ -2,15 +2,14 @@
 
 import { RetrieveLatestVotes } from "@/hooks/pokemon-hook";
 import { LatestVoteApiResult } from "@/models/poke-api-results";
+import LatestVotesSkeleton from "./latest-votes-skeleton";
 
 export default function LatestVotes() {
   const { data, isLoading, isError } = RetrieveLatestVotes();
 
   if (isLoading) {
     return (
-      <div className="h-full w-1/3 rounded-xl border text-card-foreground shadow p-4">
-        <h1 className="text-3xl">Loading...</h1>
-      </div>
+      <LatestVotesSkeleton/>
     );
   }
 

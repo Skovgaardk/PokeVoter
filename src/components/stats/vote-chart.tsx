@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import VoteChartSkeleton from "./vote-chart-skeleton";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 import {
   RetrieveLastDayVotes,
@@ -108,11 +109,7 @@ export default function VoteChart() {
 
   if (isLoading) {
     return (
-      <div className="flex w-full place-content-evenly">
-        <div className="h-full w-1/3 rounded-xl border text-card-foreground shadow p-4">
-          <h1 className="text-3xl">Loading...</h1>
-        </div>
-      </div>
+      <VoteChartSkeleton/>
     );
   }
 
