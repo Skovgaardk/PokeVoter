@@ -1,6 +1,7 @@
 import { SignOut } from "@/components/auth/sign-out";
 
 export default function Sidenav() {
+
   return (
     <aside className="fixed w-44 bg-[#1c212c] min-h-full h-full flex flex-col items-center pt-5 pb-2 space-y-7 shadow-sm shadow-gray-500">
       <div className="w-full pr-3 flex flex-col gap-y-1 text-gray-500 fill-gray-500 text-sm">

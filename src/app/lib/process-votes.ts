@@ -46,7 +46,7 @@ export function processVotesByMinute(votes: Vote[]): Minute[] {
       };
   }).reverse();
 
-  console.log("Result: ", result);
+  // console.log("Result: ", result);
   return result;
 }
   

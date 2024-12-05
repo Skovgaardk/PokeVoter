@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PokemonView from "./pokemon-view";
 import axios from "axios";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { createClient } from "../../../utils/supabase/client";
+import { Session } from "@supabase/supabase-js";
 
 type GameProps = {
   pokemons: {
@@ -15,7 +16,24 @@ type GameProps = {
 const getRandomNumber = (max: number) => Math.floor(Math.random() * max);
 
 export default function PokemonGame(props: Readonly<GameProps>) {
-  const { data: session } = useSession();
+
+  
+  const [session, setSession] = useState<Session | null>(null);
+  const supabase = createClient();
+  
+  useEffect(() => {
+    const getUserSession = async () => {
+      const {data: session, error: sessionError} = await supabase.auth.getSession();
+      setSession(session.session);
+      if (sessionError) {
+        console.log("Error getting session");
+        console.error(sessionError);
+      }
+
+    }
+    getUserSession();
+  },[]);
+
   const { pokemons } = props;
 
   const getRandomPokemonUrls = () => {
@@ -45,13 +63,13 @@ export default function PokemonGame(props: Readonly<GameProps>) {
 
     if (winnderId === parseInt(firstPokemonId)) {
       axios.post("/api/vote", {
-        username: session?.user?.email,
+        username: session?.user.email,
         winnerId: parseInt(firstPokemonId),
         loserId: parseInt(secondPokemonId),
       });
     } else {
       axios.post("/api/vote", {
-        username: session?.user?.name,
+        username: session?.user.email,
         winnerId: parseInt(secondPokemonId),
         loserId: parseInt(firstPokemonId),
       });

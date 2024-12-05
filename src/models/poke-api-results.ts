@@ -6,14 +6,19 @@ export type PokeApiResult<T> = {
 };
 
 
-export type LatestVoteApiResult = {
-  vote_id: number;
+export type LatestVoteResult = {
+  id: number;
   username: string;
-  pokemon_1_name: string;
-  pokemon_2_name: string;
+  pokemon_1_id: number;
+  pokemon_2_id: number;
   vote_date: string;
-  vote_time: string;
-}
+  pokemon_1: {
+    name: string;
+  }[];
+  pokemon_2: {
+    name: string;
+  }[];
+}[];
 
 export type PopularVoteApiResult = {
   id: number;

@@ -1,9 +1,9 @@
 import localFont from "next/font/local";
 import "./globals.css";
-import { auth } from "@/app/auth";
 import Providers from "@/app/providers";
 import Sidenav from "@/components/ui/sidenav";
 import clsx from "clsx";
+import { createClient } from "../../utils/supabase/server";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -21,7 +21,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth();
+  const supabase = await createClient();
+  const {  data: { user }, error,} = await supabase.auth.getUser();
 
   return (
     <html lang="en" className="h-full w-full bg-[#222831]">
@@ -29,12 +30,7 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <div className="flex">
-          {session && (
-            <div className="fixed h-full">
-              <Sidenav />
-            </div>
-          )}
-          <div className={clsx("bg-[#222831] w-full h-full", {'ml-44': session})}>
+          <div className="bg-[#222831] w-full h-full">
             <Providers>{children}</Providers>
           </div>
         </div>
