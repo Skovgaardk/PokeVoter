@@ -1,38 +1,48 @@
-'use client';
+"use client";
 
 import { useEffect } from "react";
 import { createClient } from "../../../utils/supabase/client";
 import { useRouter } from "next/navigation";
 
-
 export default function Signin() {
-const supabase = createClient();
-const router = useRouter();
-
+  const supabase = createClient();
+  const router = useRouter();
 
   async function signInWithGithub() {
     const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: 'github',
-      options : { redirectTo: 'http://localhost:3000/game' }
+      provider: "github",
+      options: { redirectTo: "http://localhost:3000/game" },
     });
+    if (error) {
+      console.log("Error during sign-in:", error);
+    } else {
+      console.log("Sign-in successful:", data);
+    }
   }
   async function signInWithGoogle() {
     const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options : { redirectTo: 'http://localhost:3000/game' }
+      provider: "google",
+      options: { redirectTo: "http://localhost:3000/game" },
     });
+    if (error) {
+      console.log("Error during sign-in:", error);
+    } else {
+      console.log("Sign-in successful:", data);
+    }
   }
 
   useEffect(() => {
-    const { data: { subscription },  } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_IN') {
-        router.push('/game');
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "SIGNED_IN") {
+        router.push("/game");
       }
     });
 
     return () => {
       subscription.unsubscribe();
-    }
+    };
   }, [supabase, router]);
 
   return (

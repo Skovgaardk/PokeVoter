@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import PokemonView from "./pokemon-view";
-import axios from "axios";
 import Image from "next/image";
 import { createClient } from "../../../utils/supabase/client";
 import { Session } from "@supabase/supabase-js";

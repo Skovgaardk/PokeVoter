@@ -1,6 +1,6 @@
-import { NextResponse, type NextRequest } from "next/server";
+import { type NextRequest } from "next/server";
 import { updateSession } from "../utils/supabase/middleware";
-import { createClient } from "../utils/supabase/server";
+
 
 export async function middleware(req: NextRequest) {
   // update user's auth session

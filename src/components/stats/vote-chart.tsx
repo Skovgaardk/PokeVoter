@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/chart";
 import { createClient } from "../../../utils/supabase/client";
 import { RecentVotesResult } from "@/models/poke-api-results";
+import { GetDailyVotes, GetMonthlyVotes } from "@/hooks/pokemon-hook";
 
 const chartConfig = {
   views: {
@@ -57,55 +58,11 @@ const supabase = createClient();
 export default function VoteChart() {
   const [activeChart, setActiveChart] =
     React.useState<keyof typeof chartConfig>("month");
-  const [dailyData, setDailyData] = React.useState<RecentVotesResult | null>(
-    null
-  );
-  const [dailyDataError, setDailyDataError] = React.useState(null);
-  const [monthlyData, setMonthlyData] =
-    React.useState<RecentVotesResult | null>(null);
-  const [monthlyDataError, setMonthlyDataError] = React.useState(null);
-  const [isLoading, setIsLoading] = React.useState(true);
+  const { data: dailyData, isLoading: dailyIsLoading, error: dailyDataError } = GetDailyVotes();
+  const { data: monthlyData, isLoading: monthlyIsLoading, error: monthlyDataError } = GetMonthlyVotes();
 
   //TODO: make it so that it only uses a single call to the API, and then filters the data on the client side.
   // It was done this way becouse i initially wanted it to only call the api when the user changed the chart, but then i would not be able to show the total amount of votes on the top.
-  React.useEffect(() => {
-    const fetchDailyData = async () => {
-      const { data, error } = await supabase
-        .from("recent_votes_day")
-        .select("*");
-
-      if (error) {
-        console.error("Error fetching daily data: ", error);
-        setDailyDataError(error);
-      } else {
-        console.log("Daily data: ", data);
-        setDailyData(data);
-      }
-    };
-    const fetchMonthlyData = async () => {
-      const { data, error } = await supabase
-        .from("recent_votes_month")
-        .select("*");
-
-      if (error) {
-        console.error("Error fetching monthly data: ", error);
-        setMonthlyDataError(error);
-      } else {
-        console.log("Monthly data: ", data);
-        setMonthlyData(data);
-      }
-    };
-
-    setIsLoading(true);
-    fetchDailyData();
-    fetchMonthlyData();
-  }, []);
-
-  React.useEffect(() => {
-    if (dailyData && monthlyData) {
-      setIsLoading(false);
-    }
-  }, [dailyData, monthlyData]);
 
   const chartData = React.useMemo(() => {
     switch (activeChart) {
@@ -141,7 +98,7 @@ export default function VoteChart() {
     );
   }
 
-  if (isLoading) {
+  if (dailyIsLoading || monthlyIsLoading) {
     return <VoteChartSkeleton />;
   }
 

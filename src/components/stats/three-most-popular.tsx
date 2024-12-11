@@ -1,39 +1,14 @@
 "use client";
 
-import { GetPokemon } from "@/hooks/pokemon-hook";
+import { GetPokemon, GetThreeMostPopular } from "@/hooks/pokemon-hook";
 import { PopularVoteApiResult } from "@/models/poke-api-results";
 import { Pokemon } from "@/models/pokemon";
 import Image from "next/image";
 import ThreeMostPopularSkeleton from "./three-most-popularSkeleton";
-import { useEffect, useState } from "react";
-import { createClient } from "../../../utils/supabase/client";
-
-const supabase = createClient();
 
 export default function ThreeMostPopular() {
-  const [data, setData] = useState<PopularVoteApiResult | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function fetchMostPopular() {
-      const { data: dbData, error } = await supabase
-        .from("pokemon")
-        .select("*")
-        .order("popularity", { ascending: false })
-        .limit(3);
-
-      if (error) {
-        console.error("Error fetching most popular: ", error);
-        setError("Error fetching most popular: " + error);
-      } else {
-        //TODO: make it so this error doesnt show
-        setData(dbData);
-      }
-    }
-    fetchMostPopular();
-  }, []);
-
-  const [poke1, poke2, poke3] = Array.isArray(data) ? data : [];
+  const {data: dbData, isLoading, error } = GetThreeMostPopular();
+  const [poke1, poke2, poke3] = dbData || [];
 
   const {
     data: poke1Data,
@@ -81,7 +56,7 @@ export default function ThreeMostPopular() {
     </div>
   );
 
-  if (poke1Loading || poke2Loading || poke3Loading) {
+  if (isLoading || poke1Loading || poke2Loading || poke3Loading) {
     return <ThreeMostPopularSkeleton />;
   }
 

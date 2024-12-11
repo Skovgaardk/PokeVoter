@@ -1,7 +1,6 @@
 "use server";
 
-import { PokeApiResult, LatestVoteApiResult } from "@/models/poke-api-results";
-import { sql } from "@vercel/postgres";
+import { PokeApiResult } from "@/models/poke-api-results";
 
 type PokemonResult = {
     name: string,
@@ -26,17 +25,3 @@ export async function fetchAllPokemons(): Promise<PokeApiResult<PokemonResult>> 
 }
 
 
-export async function retrieveLatestVotes(): Promise<LatestVoteApiResult[]> {
-  try {
-    const data = await sql<LatestVoteApiResult>`
-      SELECT * FROM votes
-      ORDER BY vote_date DESC LIMIT 4`;
-
-    return data.rows;
-
-  } catch (error) {
-
-    console.error("Error fetching data: ", error);
-    throw new Error("Failed to fetch latest votes.");
-  }
-}

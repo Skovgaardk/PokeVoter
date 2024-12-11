@@ -21,6 +21,6 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
 ## TODO
-- fix "hour" chart to work on production (timedate issue)
+- create db migration file
+
 - maybe refactor three-most-popular component to split into each their own components?
-- make everything actually look better?
