@@ -1,19 +1,39 @@
 "use client";
 
-import { GetPokemon, RetrieveMostPopular } from "@/hooks/pokemon-hook";
+import { GetPokemon } from "@/hooks/pokemon-hook";
 import { PopularVoteApiResult } from "@/models/poke-api-results";
 import { Pokemon } from "@/models/pokemon";
 import Image from "next/image";
 import ThreeMostPopularSkeleton from "./three-most-popularSkeleton";
+import { useEffect, useState } from "react";
+import { createClient } from "../../../utils/supabase/client";
+
+const supabase = createClient();
 
 export default function ThreeMostPopular() {
-  const {
-    data: dataFromDB,
-    isLoading: isLoadingFromDB,
-    isError: isErrorFromDB,
-  } = RetrieveMostPopular();
+  const [data, setData] = useState<PopularVoteApiResult | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const [poke1, poke2, poke3] = dataFromDB?.mostPopular || [];
+  useEffect(() => {
+    async function fetchMostPopular() {
+      const { data: dbData, error } = await supabase
+        .from("pokemon")
+        .select("*")
+        .order("popularity", { ascending: false })
+        .limit(3);
+
+      if (error) {
+        console.error("Error fetching most popular: ", error);
+        setError("Error fetching most popular: " + error);
+      } else {
+        //TODO: make it so this error doesnt show
+        setData(dbData);
+      }
+    }
+    fetchMostPopular();
+  }, []);
+
+  const [poke1, poke2, poke3] = Array.isArray(data) ? data : [];
 
   const {
     data: poke1Data,
@@ -61,13 +81,11 @@ export default function ThreeMostPopular() {
     </div>
   );
 
-  if (isLoadingFromDB || poke1Loading || poke2Loading || poke3Loading) {
-    return (
-      <ThreeMostPopularSkeleton/>
-    );
+  if (poke1Loading || poke2Loading || poke3Loading) {
+    return <ThreeMostPopularSkeleton />;
   }
 
-  if (isErrorFromDB || isErrorPoke1 || isErrorPoke2 || isErrorPoke3) {
+  if (error || isErrorPoke1 || isErrorPoke2 || isErrorPoke3) {
     return (
       <div className="flex w-full place-content-evenly">
         <h1>Error...</h1>

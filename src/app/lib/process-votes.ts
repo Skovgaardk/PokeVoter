@@ -7,50 +7,6 @@ type Vote = {
   vote_date: string;
 };
 
-type Minute = {
-  minute: string;
-  voteCount: number;
-};
-
-
-export function processVotesByMinute(votes: Vote[]): Minute[] {
-  const voteCounts = new Map<string, number>();
-
-  votes.forEach((vote) => {
-      const voteDate = new Date(vote.vote_date);
-
-      const localVoteDate = new Date(voteDate.getTime() - voteDate.getTimezoneOffset() * 60000);
-      
-      const minuteKey = localVoteDate.toLocaleTimeString('en-US', { 
-          hour: '2-digit', 
-          minute: '2-digit', 
-          hour12: false 
-      });
-
-      voteCounts.set(minuteKey, (voteCounts.get(minuteKey) || 0) + 1);
-      console.log("VoteCount: ", voteCounts);
-  });
-
-  const result: Minute[] =  Array.from({ length: 60 }, (_, i) => {
-      const pastMinute = new Date(Date.now() - i * 60 * 1000);
-      // This is not optimal, read toLocaleTimeString documentation
-      const minuteKey = pastMinute.toLocaleTimeString('en-US', { 
-          hour: '2-digit', 
-          minute: '2-digit', 
-          hour12: false 
-      });
-
-      return {
-          minute: minuteKey,
-          voteCount: voteCounts.get(minuteKey) || 0
-      };
-  }).reverse();
-
-  // console.log("Result: ", result);
-  return result;
-}
-  
-
 type Hourly = {
   hour: string;
   voteCount: number;

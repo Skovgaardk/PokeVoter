@@ -14,10 +14,10 @@ export type LatestVoteResult = {
   vote_date: string;
   pokemon_1: {
     name: string;
-  }[];
+  };
   pokemon_2: {
     name: string;
-  }[];
+  };
 }[];
 
 export type PopularVoteApiResult = {
@@ -25,3 +25,12 @@ export type PopularVoteApiResult = {
   name: string;
   popularity: number;
 }
+
+export type RecentVotesResult = {
+  id: number;
+  username: string;
+  pokemon_1_id: number;
+  pokemon_2_id: number;
+  winner_id: number;
+  vote_date: string;
+}[];

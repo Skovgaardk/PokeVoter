@@ -7,8 +7,9 @@ import type { LatestVoteResult } from "@/models/poke-api-results";
 
 const supabase = createClient();
 export default function LatestVotes() {
-  const [data, setData] = useState<LatestVoteResult[]>([]);
+  const [data, setData] = useState<LatestVoteResult>([]);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchLatestVotes() {
@@ -32,13 +33,24 @@ export default function LatestVotes() {
         console.error("Error fetching latest votes: ", error);
         setError("Error fetching latest votes: " + error);
       } else {
-        setData([{ ...newestvotes }]);
+        //TODO: make it so this error doesnt show
+        setData(newestvotes);
       }
     }
-    fetchLatestVotes().then((votes) =>
-      console.log("Latest votes fetched: ", votes)
-    );
+
+    setIsLoading(true);
+    fetchLatestVotes();
   }, []);
+
+  useEffect(() => {
+    if (data.length > 0) {
+      setIsLoading(false);
+    }
+  }, [data]);
+
+  if (isLoading) {
+    return <LatestVotesSkeleton />;
+  }
 
   if (error) {
     return (
@@ -48,34 +60,37 @@ export default function LatestVotes() {
     );
   }
 
-  console.log("data: ", data);
-
-  //TODO: make the height of the div dynamic based on the size of other divs
   return (
     <div className="h-full w-1/2 rounded-xl border text-card-foreground shadow p-4 border-[#423e47]">
       <h2 className="text-2xl">Latest Votes</h2>
       {/* fix it so that this doesnt truncate but actually fits inside every time */}
       <div className="h-96 flex flex-col justify-evenly gap-y-4 mt-2">
-        {data.map((votes, i) => {
+        {data.map((vote) => {
           return (
             <div
-              key={votes[i].id}
-              className="flex rounded-2xl shadow-lg p-3 border border-[#423e47] bg-[#292f38]"
+              key={vote.id}
+              className="flex h-1/5 rounded-2xl shadow-lg p-3 border border-[#423e47] bg-[#292f38]"
             >
               <div className="w-1/2 text-pretty break-words flex justify-center items-center">
-                <h1 className="text-2xl">{votes[i].username}</h1>
+                <h1 className="text-2xl">{vote.username}</h1>
               </div>
 
               <div className="w-96 ml-6 flex-col">
                 <div className="flex justify-center text-center text-lg">
-                  <h1>
-                    {votes[i].pokemon_1[0].name} (winner) vs {votes[i].pokemon_2[0].name}
+                  <h1 className="flex">
+                    <span className="inline-block max-w-[10ch] truncate">
+                      {vote.pokemon_1.name}
+                    </span>
+                    (won) vs
+                    <span className="inline-block max-w-[10ch] truncate ml-2">
+                      {vote.pokemon_2.name}
+                    </span>
                   </h1>
                 </div>
                 <div className="flex justify-center text-lg">
                   <h1>
-                    {new Date(votes[i].vote_date).toDateString()},{" "}
-                    {votes[i].vote_date} UTC
+                    {new Date(vote.vote_date).toDateString()} at{" "}
+                    {vote.vote_date.slice(11, 16)}
                   </h1>
                 </div>
               </div>
