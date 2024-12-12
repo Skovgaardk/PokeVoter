@@ -102,10 +102,10 @@ export default function VoteChart() {
       <div className="h-full w-1/3 rounded-xl text-card-foreground shadow p-4 bg-[#292f38] shadow-sm border border-[#423e47]">
         <Card>
           <CardHeader className="flex flex-col items-stretch space-y-0 border-b p-0 sm:flex-row">
-            <div className="flex flex-1 flex-col justify-center gap-1 px-10 py-5 sm:py-6 text-lg text-[#FFFFFF]">
+            <div className="flex flex-1 flex-col justify-center gap-1 px-8 py-5 sm:py-6 text-lg text-[#FFFFFF]">
               <CardTitle>Votes</CardTitle>
               <CardDescription>
-                Showing total votes for the last month/day/hour
+                Showing total votes for the last month / day
               </CardDescription>
             </div>
             <div className="flex">
