@@ -1,11 +1,9 @@
 "use client";
 
 import LatestVotesSkeleton from "./latest-votes-skeleton";
-import { createClient } from "../../../utils/supabase/client";
 import { GetLatestVotes } from "@/hooks/pokemon-hook";
 import { LatestVoteResult } from "@/models/poke-api-results";
 
-const supabase = createClient();
 export default function LatestVotes() {
   const { data, isLoading, error } = GetLatestVotes();
 

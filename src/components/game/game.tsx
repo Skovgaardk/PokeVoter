@@ -57,22 +57,28 @@ export default function PokemonGame(props: Readonly<GameProps>) {
     const secondPokemonId = pokemonUrls.secondPokemonUrl.split("/")[6];
 
     const winnerId = id;
-    const loserId = winnerId === parseInt(firstPokemonId) ? secondPokemonId : firstPokemonId;
+    const loserId =
+      winnerId === parseInt(firstPokemonId) ? secondPokemonId : firstPokemonId;
 
     const vote = {
-      username : session?.user.email || null,
+      username: session?.user.email || null,
       pokemon_1_id: winnerId,
       pokemon_2_id: loserId,
       winner_id: winnerId,
-    }
+    };
 
     try {
-      const { error } = await supabase.rpc("handle_vote", vote);
+      const reponse = await fetch("/api/vote", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(vote),
+      });
 
-      if (error) {
-        console.error("Error inserting vote: ", error);
+      if (!reponse.ok) {
+        console.error("Error inserting vote: ", reponse.statusText);
       }
-
     } catch (error) {
       console.error("Error inserting vote: ", error);
     }

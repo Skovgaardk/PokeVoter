@@ -18,8 +18,6 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-import { createClient } from "../../../utils/supabase/client";
-import { RecentVotesResult } from "@/models/poke-api-results";
 import { GetDailyVotes, GetMonthlyVotes } from "@/hooks/pokemon-hook";
 
 const chartConfig = {
@@ -52,8 +50,6 @@ const toolTipFormatter = (
       return value;
   }
 };
-
-const supabase = createClient();
 
 export default function VoteChart() {
   const [activeChart, setActiveChart] =
