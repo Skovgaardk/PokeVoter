@@ -11,7 +11,7 @@ export default function Signin() {
   async function signInWithGithub() {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "github",
-      options: { redirectTo: "http://localhost:3000/game" },
+      options: { redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}` },
     });
     if (error) {
       console.log("Error during sign-in:", error);
@@ -22,7 +22,7 @@ export default function Signin() {
   async function signInWithGoogle() {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: "http://localhost:3000/game" },
+      options: { redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}` },
     });
     if (error) {
       console.log("Error during sign-in:", error);

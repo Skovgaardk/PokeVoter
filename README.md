@@ -21,6 +21,8 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
 ## TODO
-- create db migration file
+- Make login page server component
+- Fix having to log in after ever page swap on prod
 
+- Add margin to to latest votes
 - maybe refactor three-most-popular component to split into each their own components?
