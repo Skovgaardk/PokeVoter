@@ -1,5 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
-import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
 
 export function GetPokemon(url: string) {
   const pokemon = useQuery({
@@ -12,68 +11,46 @@ export function GetPokemon(url: string) {
   return pokemon;
 }
 
-export function SendVoteResult(winnerId: number, loserId: number) {
-  const vote = useMutation({
-    mutationFn: async () => {
-      const res = await axios.post("/api/vote", { winnerId, loserId });
-      return res.data;
-    },
-  });
-  return vote;
-}
-
-
-export function RetrieveMostPopular() {
-  const stats = useQuery({
-    queryKey: ["mostPopular"],
+export function GetThreeMostPopular() {
+  const popular = useQuery({
+    queryKey: ["popular"],
     queryFn: async () => {
-      const response = await fetch("/api/stats/most-popular");
+      const response = await fetch("/api/stats/popular");
       return await response.json();
     },
   });
-  return stats;
+  return popular;
 }
 
-export function RetrieveLastHourVotes() {
-  const stats = useQuery({
-    queryKey: ["votesHourly"],
+export function GetDailyVotes() {
+  const dailyVotes = useQuery({
+    queryKey: ["dailyVotes"],
     queryFn: async () => {
-      const response = await fetch("/api/stats/votes-hourly");
+      const response = await fetch("/api/stats/daily-votes");
       return await response.json();
     },
   });
-  return stats;
+  return dailyVotes;
 }
 
-export function RetrieveLastDayVotes() {
-  const stats = useQuery({
-    queryKey: ["votesDaily"],
+export function GetMonthlyVotes() {
+  const monthlyVotes = useQuery({
+    queryKey: ["monthlyVotes"],
     queryFn: async () => {
-      const response = await fetch("/api/stats/votes-daily");
+      const response = await fetch("/api/stats/monthly-votes");
       return await response.json();
     },
   });
-  return stats;
+  return monthlyVotes;
 }
 
-export function RetrieveLastMonthVotes() {
-  const stats = useQuery({
-    queryKey: ["votesWeekly"],
-    queryFn: async () => {
-      const response = await fetch("/api/stats/votes-monthly");
-      return await response.json();
-    },
-  });
-  return stats;
-}
-
-export function RetrieveLatestVotes() {
-  const stats = useQuery({
+export function GetLatestVotes() {
+  const latestVotes = useQuery({
     queryKey: ["latestVotes"],
     queryFn: async () => {
       const response = await fetch("/api/stats/latest-votes");
       return await response.json();
     },
   });
-  return stats;
+  return latestVotes;
 }

@@ -1,32 +1,63 @@
-'use client';
+"use client";
 
-import { signIn } from "next-auth/react";
-
+import { useEffect } from "react";
+import { createClient } from "../../../utils/supabase/client";
+import { useRouter } from "next/navigation";
 
 export default function Signin() {
+  const supabase = createClient();
+  const router = useRouter();
 
-  const handleGitHubSignIn = async () => {
-    await signIn("github", { redirectTo: "/game" });
-  };
+  async function signInWithGithub() {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "github",
+      options: { redirectTo: "http://localhost:3000/game" },
+    });
+    if (error) {
+      console.log("Error during sign-in:", error);
+    } else {
+      console.log("Sign-in successful:", data);
+    }
+  }
+  async function signInWithGoogle() {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: "http://localhost:3000/game" },
+    });
+    if (error) {
+      console.log("Error during sign-in:", error);
+    } else {
+      console.log("Sign-in successful:", data);
+    }
+  }
 
+  useEffect(() => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "SIGNED_IN") {
+        router.push("/game");
+      }
+    });
 
-  const handleGoogleSignIn = async () => {
-    await signIn("google", { redirectTo: "/game" });
-  };
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [supabase, router]);
 
   return (
     <section className="bg-gray-1 py-20 dark:bg-dark lg:py-[120px]">
       <div className="container mx-auto">
         <div className="-mx-4 flex flex-wrap">
           <div className="w-full px-4">
-            <div className="relative mx-auto max-w-[525px] overflow-hidden rounded-lg bg-white px-10 py-16 text-center dark:bg-dark-2 sm:px-12 md:px-[60px]">
-              <p className="mb-6 text-base text-secondary-color dark:text-dark-7">
+            <div className="relative mx-auto max-w-[525px] overflow-hidden rounded-lg px-10 py-16 text-center sm:px-12 md:px-[60px]">
+              <p className="mb-6 text-3xl text-secondary-color text-white">
                 Login with
               </p>
               <ul className="-mx-2 mb-12 flex justify-between">
                 <li className="w-full px-2">
                   <button
-                    onClick={handleGitHubSignIn}
+                    onClick={signInWithGithub}
                     className="flex h-11 w-full items-center justify-center rounded-md bg-[#404040] text-white hover:bg-opacity-90"
                   >
                     <svg
@@ -43,7 +74,7 @@ export default function Signin() {
 
                 <li className="w-full px-2">
                   <button
-                    onClick={handleGoogleSignIn}
+                    onClick={signInWithGoogle}
                     className="flex h-11 w-full items-center justify-center rounded-md bg-[#D64937] text-white hover:bg-opacity-90"
                   >
                     <svg

@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PokemonView from "./pokemon-view";
-import axios from "axios";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
+import { createClient } from "../../../utils/supabase/client";
+import { Session } from "@supabase/supabase-js";
 
 type GameProps = {
   pokemons: {
@@ -15,7 +15,22 @@ type GameProps = {
 const getRandomNumber = (max: number) => Math.floor(Math.random() * max);
 
 export default function PokemonGame(props: Readonly<GameProps>) {
-  const { data: session } = useSession();
+  const [session, setSession] = useState<Session | null>(null);
+  const supabase = createClient();
+
+  useEffect(() => {
+    const getUserSession = async () => {
+      const { data: session, error: sessionError } =
+        await supabase.auth.getSession();
+      setSession(session.session);
+      if (sessionError) {
+        console.log("Error getting session");
+        console.error(sessionError);
+      }
+    };
+    getUserSession();
+  }, []);
+
   const { pokemons } = props;
 
   const getRandomPokemonUrls = () => {
@@ -31,36 +46,47 @@ export default function PokemonGame(props: Readonly<GameProps>) {
 
   const [pokemonUrls, setPokemonUrls] = useState(getRandomPokemonUrls());
 
-  const handleVote = (id: number) => {
+  const handleVote = async (id: number) => {
     setPokemonUrls(getRandomPokemonUrls());
     if (pokemonUrls.firstPokemonUrl === pokemonUrls.secondPokemonUrl) {
       setPokemonUrls(getRandomPokemonUrls());
       return;
     }
 
-    const winnderId = id;
-
     const firstPokemonId = pokemonUrls.firstPokemonUrl.split("/")[6];
     const secondPokemonId = pokemonUrls.secondPokemonUrl.split("/")[6];
 
-    if (winnderId === parseInt(firstPokemonId)) {
-      axios.post("/api/vote", {
-        username: session?.user?.email,
-        winnerId: parseInt(firstPokemonId),
-        loserId: parseInt(secondPokemonId),
+    const winnerId = id;
+    const loserId =
+      winnerId === parseInt(firstPokemonId) ? secondPokemonId : firstPokemonId;
+
+    const vote = {
+      username: session?.user.email || null,
+      pokemon_1_id: winnerId,
+      pokemon_2_id: loserId,
+      winner_id: winnerId,
+    };
+
+    try {
+      const reponse = await fetch("/api/vote", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(vote),
       });
-    } else {
-      axios.post("/api/vote", {
-        username: session?.user?.name,
-        winnerId: parseInt(secondPokemonId),
-        loserId: parseInt(firstPokemonId),
-      });
+
+      if (!reponse.ok) {
+        console.error("Error inserting vote: ", reponse.statusText);
+      }
+    } catch (error) {
+      console.error("Error inserting vote: ", error);
     }
   };
 
   return (
     <div className="h-full w-full flex flex-row justify-center items-center gap-6">
-      <PokemonView url={pokemonUrls.firstPokemonUrl!} onVote={handleVote} />
+      <PokemonView url={pokemonUrls.firstPokemonUrl} onVote={handleVote} />
       <div>
         <h1 className="justify-center items-center text-pokemon-yellow [text-shadow:_0_6px_6px_rgb(34_40_49)]">
           <div>
@@ -73,7 +99,7 @@ export default function PokemonGame(props: Readonly<GameProps>) {
           </div>
         </h1>
       </div>
-      <PokemonView url={pokemonUrls.secondPokemonUrl!} onVote={handleVote} />
+      <PokemonView url={pokemonUrls.secondPokemonUrl} onVote={handleVote} />
     </div>
   );
 }

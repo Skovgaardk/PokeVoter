@@ -6,8 +6,8 @@ export async function GET() {
 
   try {
     const { data, error } = await supabase
-    .from("latest_votes")
-    .select("*");
+      .from("recent_votes_month")
+      .select("*");
 
     if (error) {
       return NextResponse.json({ error });

@@ -6,8 +6,10 @@ export async function GET() {
 
   try {
     const { data, error } = await supabase
-    .from("latest_votes")
-    .select("*");
+      .from("pokemon")
+      .select("*")
+      .order("popularity", { ascending: false })
+      .limit(3);
 
     if (error) {
       return NextResponse.json({ error });

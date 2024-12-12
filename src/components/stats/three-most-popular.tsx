@@ -1,19 +1,14 @@
 "use client";
 
-import { GetPokemon, RetrieveMostPopular } from "@/hooks/pokemon-hook";
+import { GetPokemon, GetThreeMostPopular } from "@/hooks/pokemon-hook";
 import { PopularVoteApiResult } from "@/models/poke-api-results";
 import { Pokemon } from "@/models/pokemon";
 import Image from "next/image";
 import ThreeMostPopularSkeleton from "./three-most-popularSkeleton";
 
 export default function ThreeMostPopular() {
-  const {
-    data: dataFromDB,
-    isLoading: isLoadingFromDB,
-    isError: isErrorFromDB,
-  } = RetrieveMostPopular();
-
-  const [poke1, poke2, poke3] = dataFromDB?.mostPopular || [];
+  const {data: dbData, isLoading, error } = GetThreeMostPopular();
+  const [poke1, poke2, poke3] = dbData || [];
 
   const {
     data: poke1Data,
@@ -61,13 +56,11 @@ export default function ThreeMostPopular() {
     </div>
   );
 
-  if (isLoadingFromDB || poke1Loading || poke2Loading || poke3Loading) {
-    return (
-      <ThreeMostPopularSkeleton/>
-    );
+  if (isLoading || poke1Loading || poke2Loading || poke3Loading) {
+    return <ThreeMostPopularSkeleton />;
   }
 
-  if (isErrorFromDB || isErrorPoke1 || isErrorPoke2 || isErrorPoke3) {
+  if (error || isErrorPoke1 || isErrorPoke2 || isErrorPoke3) {
     return (
       <div className="flex w-full place-content-evenly">
         <h1>Error...</h1>

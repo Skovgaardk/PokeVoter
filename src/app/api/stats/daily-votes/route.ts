@@ -6,7 +6,7 @@ export async function GET() {
 
   try {
     const { data, error } = await supabase
-    .from("latest_votes")
+    .from("recent_votes_day")
     .select("*");
 
     if (error) {
