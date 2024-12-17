@@ -22,7 +22,5 @@ This project uses [`next/font`](https://nextjs.org/docs/app/building-your-applic
 
 ## TODO
 - Make login page server component
-- Fix having to log in after ever page swap on prod
-
-- Add margin to to latest votes
+- fix so there is no error when no picture is loaded.
 - maybe refactor three-most-popular component to split into each their own components?

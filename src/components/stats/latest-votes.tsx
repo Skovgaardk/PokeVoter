@@ -30,7 +30,7 @@ export default function LatestVotes() {
               key={vote.vote_id}
               className="flex h-1/5 rounded-2xl shadow-lg p-3 border border-[#423e47] bg-[#292f38]"
             >
-              <div className="w-1/2 text-pretty break-words flex justify-center items-center">
+              <div className="w-1/2 text-pretty break-words flex justify-center items-center ml-2">
                 <h1 className="text-2xl">{vote.username}</h1>
               </div>
 

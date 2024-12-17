@@ -1,6 +1,6 @@
 import Sidenav from "@/components/ui/sidenav";
 
-export default function GameLayout(
+export default async function GameLayout(
   props: Readonly<{ children: React.ReactNode }>
 ) {
   return (
